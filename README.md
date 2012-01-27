@@ -17,7 +17,17 @@
 ## Usage
 
 ```coffee-script
-NOTHING HERE YET
+slate = require 'slate'
+
+server = slate.create()
+
+server.root "#{__dirname}/public"
+server.enable '404', 'mime', 'static'
+server.set 'production'
+server.set 'debug', false
+
+server.listen 8080
+console.log "Server started!"
 ```
 
 ## Examples
