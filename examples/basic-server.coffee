@@ -16,11 +16,10 @@ params =
           {name: "blue", link: true, url: "#Blue"}
       ]
   
-server.engine 'mustache', hogan, params
-#server.engine 'jade', jade, params
+#server.engine 'mustache', hogan, params
+server.engine 'jade', jade, params
 
 server.set 'production'
-server.set 'debug', false
 
 server.listen 8080
 console.log "Server started!"
