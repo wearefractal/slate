@@ -3,7 +3,7 @@ slate = require '../index.js'
 server = slate.create()
 
 server.root "#{__dirname}/public"
-server.enable '404', 'mime', 'static'
+server.enable 'csrf', 'lfi', 'xss', '404', 'mime', 'json', 'static'
 server.set 'production'
 server.set 'debug', false
 

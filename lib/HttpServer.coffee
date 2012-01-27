@@ -5,14 +5,18 @@ https = require 'https'
 {basename, extname, join} = require 'path'
 {parse} = require 'url'
 {lookupFile} = require './util'
+require './httpExtend'
 
 class HttpServer extends EventEmitter
   constructor: ->
     @loadDefaults()
-    @on 'request', (req, res, path) => 
-      for key, val of @middle
-        if val.enabled
-          val.fn req, res, path
+    @on 'request', (req, res) => 
+      stack = (val for key,val of @middle)
+      next = -> 
+        ware = stack.shift()
+        return unless ware?
+        ware.fn req, res, next if ware.enabled
+      next()
       return
       
   enable: (args...) -> @middle[name]?.enabled = true for name in args
@@ -35,7 +39,8 @@ class HttpServer extends EventEmitter
     return unless req? and res?
     pathname = parse(req.url).pathname
     path = lookupFile pathname, @engines, @config.get 'root'
-    @emit 'request', req, res, path
+    res.resolvedPath = path
+    @emit 'request', req, res
   
   loadDefaults: ->
     middleDir = join __dirname + '/middle/'

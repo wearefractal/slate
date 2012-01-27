@@ -9,7 +9,8 @@
    
    "dependencies":{
       "coffee-script":"*",
-      "mime":"*"
+      "mime":"*",
+      "xemplar":"*"
    },
    "devDependencies":{
       "node-log":"*",

@@ -1,8 +1,6 @@
 {join, existsSync, readdirSync, dirname, basename, extname} = require 'path'
-
-module.exports =    
+module.exports =  
   lookupFile: (lpath, engines, root) ->
-  
     path = join root, lpath, 'index.html'
     return path if existsSync path
     path = join root, lpath, 'index.htm'

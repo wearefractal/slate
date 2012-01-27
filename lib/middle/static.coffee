@@ -1,5 +1,6 @@
 {readFile} = require 'fs'
 
-module.exports = (req, res, path) -> 
-  if path?
-    readFile path, (err, data) -> res.end data
+module.exports = (req, res, next) -> 
+  if res.resolvedPath?
+    readFile res.resolvedPath, (err, data) -> res.end data
+  next()
