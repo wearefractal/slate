@@ -1,4 +1,9 @@
 class Config
+  constructor: ->
+    @engines = {}
+    @middle = {}
+    @production = false
+    
   load: (path) -> @set require path
   get: (key) -> @[key] || undefined
   set: (key, val) -> 
@@ -11,5 +16,5 @@ class Config
     else
       # TODO: Throw error?
     return
-
+  
 module.exports = Config

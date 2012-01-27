@@ -1,5 +1,5 @@
 module.exports = (req, res, next) -> 
-  if res.resolvedPath?
+  if req.resolvedPath?
     next()
   else
-    res.end '404 - Not found'
+    res.deny 404

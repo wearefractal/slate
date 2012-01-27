@@ -8,26 +8,27 @@ https = require 'https'
 require './httpExtend'
 
 class HttpServer extends EventEmitter
-  constructor: ->
+  constructor: (@config) ->
     @loadDefaults()
     @on 'request', (req, res) => 
-      stack = (val for key,val of @middle)
-      next = -> 
+      stack = (val for key,val of @config.get('middle'))
+      next = => 
         ware = stack.shift()
         return unless ware?
-        ware.fn req, res, next if ware.enabled
+        if ware.enabled
+          ware.fn req, res, next, @config
+        else
+          next()
       next()
       return
       
-  enable: (args...) -> @middle[name]?.enabled = true for name in args
-  disable: (args...) -> @middle[name]?.enabled = false for name in args
+  enable: (args...) -> @config.middle[name]?.enabled = true for name in args
+  disable: (args...) -> @config.middle[name]?.enabled = false for name in args
   
-  engine: (ext, fn, args...) -> @engines[ext] = fn: fn, args: args
-  engines: {}
-  use: (name, fn, args...) -> @middle[name] = fn: fn, args: args
-  middle: {}
+  engine: (ext, obj, args) -> @config.engines[ext] = compiler: obj, args: args
+  use: (name, fn, args...) -> @config.middle[name] = fn: fn, args: args
   
-  listen: (@port, @host, @config) ->
+  listen: (@port, @host) ->
     if @config.get 'https'
       serv = https.createServer @handleRequest
     else
@@ -38,8 +39,8 @@ class HttpServer extends EventEmitter
   handleRequest: (req, res) =>
     return unless req? and res?
     pathname = parse(req.url).pathname
-    path = lookupFile pathname, @engines, @config.get 'root'
-    res.resolvedPath = path
+    path = lookupFile pathname, @config
+    req.resolvedPath = path
     @emit 'request', req, res
   
   loadDefaults: ->

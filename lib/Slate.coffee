@@ -3,8 +3,9 @@ Config = require './Config'
 HttpServer = require './HttpServer'
 
 class Slate extends EventEmitter
-  config: new Config()
-  http: new HttpServer()
+  constructor: ->
+    @config = new Config
+    @http = new HttpServer @config
   
   # Convenience
   root: (dir) -> @set 'root', dir 
@@ -16,7 +17,6 @@ class Slate extends EventEmitter
   set: (args...) -> @config.set args... 
   get: (args...) -> @config.get args...
   
-  listen: (port, host) ->
-    @http.listen port, host, @config
+  listen: (port, host) -> @http.listen port, host
 
 module.exports = Slate
