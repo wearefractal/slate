@@ -18,11 +18,13 @@
 
 ```coffee-script
 slate = require 'slate'
+jade = require 'jade'
 
 server = slate.create()
 
 server.root "#{__dirname}/public"
 server.enable 'csrf', 'lfi', 'xss', '404', 'mime', 'static'
+server.engine 'jade', jade, {cool: 'params'}
 server.set 'production'
 server.set 'debug', false
 
