@@ -41,6 +41,7 @@ class HttpServer extends EventEmitter
     pathname = parse(req.url).pathname
     path = lookupFile pathname, @config
     req.resolvedPath = path
+    res.setHeader 'X-Powered-By', 'Slate'
     @emit 'request', req, res
   
   loadDefaults: ->
