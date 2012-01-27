@@ -22,5 +22,5 @@ module.exports =
         path = join lpath, 'index.' + key
         return path if existsSync path
     else # Specific file
-      return lpath if existsSync path
+      return lpath if existsSync lpath
     return
