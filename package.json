@@ -1,6 +1,6 @@
 {
    "name":"slate",
-   "description":"Server",
+   "description":"Barebones server with extensible middleware.",
    "version":"0.0.1",
    "homepage":"http://github.com/wearefractal/slate",
    "repository":"git://github.com/wearefractal/slate.git",

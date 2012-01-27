@@ -6,7 +6,7 @@
 </tr>
 <tr>
 <td>Description</td>
-<td>Server</td>
+<td>Barebones server with extensible middleware.</td>
 </tr>
 <tr>
 <td>Node Version</td>
@@ -22,7 +22,7 @@ slate = require 'slate'
 server = slate.create()
 
 server.root "#{__dirname}/public"
-server.enable '404', 'mime', 'static'
+server.enable 'csrf', 'lfi', 'xss', '404', 'mime', 'static'
 server.set 'production'
 server.set 'debug', false
 
