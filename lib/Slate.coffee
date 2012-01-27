@@ -1,4 +1,5 @@
 {EventEmitter} = require 'events'
+{normalize} = require 'path'
 Config = require './Config'
 HttpServer = require './HttpServer'
 
@@ -8,7 +9,7 @@ class Slate extends EventEmitter
     @http = new HttpServer @config
   
   # Convenience
-  root: (dir) -> @set 'root', dir 
+  root: (dir) -> @set 'root', normalize dir 
   engine: (args...) -> @http.engine args...
   use: (args...) -> @http.use args...
   enable: (args...) -> @http.enable args...

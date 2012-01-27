@@ -1,12 +1,17 @@
 {join, existsSync, readdirSync, dirname, basename, extname} = require 'path'
+
+isFolder = (path) ->
+  return unless path?
+  lastChar = path.charAt path.length - 1
+  return (lastChar is '/') or (lastChar is '\\')
+  
 module.exports =  
   lookupFile: (lpath, config) ->
     root = config.get 'root'
     engines = config.get 'engines'
     lpath = join root, lpath
-    
     # Find folder index
-    if lpath.charAt(lpath.length-1) is '/'
+    if isFolder lpath
       path = join lpath, 'index.html'
       return path if existsSync path
       path = join lpath, 'index.htm'
