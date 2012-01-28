@@ -25,7 +25,7 @@ class HttpServer extends EventEmitter
   enable: (args...) -> @config.middle[name]?.enabled = true for name in args
   disable: (args...) -> @config.middle[name]?.enabled = false for name in args
   
-  engine: (ext, obj, args) -> @config.engines[ext] = compiler: obj, args: args
+  engine: (ext, obj, data, options) -> @config.engines[ext] = compile: obj, data: data, options: options
   use: (name, fn, args...) -> @config.middle[name] = fn: fn, args: args
   
   listen: (@port, @host) ->

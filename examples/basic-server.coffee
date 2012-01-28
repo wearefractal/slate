@@ -1,23 +1,24 @@
 slate = require '../index.js'
-jade = require 'jade'
-#hogan = require 'hogan.js'
+#jade = require 'slate-jade'
+hogan = require 'slate-hogan'
 
 server = slate.create()
 
 server.root "#{__dirname}/public"
 server.enable 'csrf', 'lfi', 'xss', '404', 'mime', 'static'
 
-params =
-  data:
-      header: "Colors"
-      items: [
-          {name: "red", first: true, url: "#Red"}
-          {name: "green", link: true, url: "#Green"}
-          {name: "blue", link: true, url: "#Blue"}
-      ]
-  
-#server.engine 'mustache', hogan, params
-server.engine 'jade', jade, params
+data = 
+  header: "Colors"
+  items: [
+	  {name: "red", first: true, url: "#Red"}
+	  {name: "green", link: true, url: "#Green"}
+	  {name: "blue", link: true, url: "#Blue"}
+  ]
+
+options = {}
+
+server.engine 'mustache', hogan, data, options
+#server.engine 'jade', jade, data, options
 
 server.set 'production'
 
