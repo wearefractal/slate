@@ -10,8 +10,6 @@ module.exports = (req, res, next, config) ->
       eng = engines[ext]
       data = String data
       if eng?
-        console.log data
-        console.log eng
         data = eng.compile data, eng.data, eng.options
       res.end data
   next()
