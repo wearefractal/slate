@@ -1,6 +1,6 @@
 slate = require '../index.js'
 jade = require 'jade'
-hogan = require 'hogan.js'
+#hogan = require 'hogan.js'
 
 server = slate.create()
 
