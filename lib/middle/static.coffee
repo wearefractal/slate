@@ -11,9 +11,8 @@ module.exports = (req, res, next, config) ->
       engines = config.get 'engines'
       ext = extname(req.resolvedPath)[1..]
       eng = engines[ext]
-      data = String data
       if eng?
-        data = eng.compile data, eng.data, eng.options
+        data = eng.compile String(data), eng.data, eng.options
       res.end data
       cache[req.resolvedPath] = data if config.get 'production'
   next()
