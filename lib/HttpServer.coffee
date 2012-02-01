@@ -30,13 +30,15 @@ class HttpServer extends EventEmitter
   
   listen: (@port, @host) ->
     if @config.get 'https'
-      serv = https.createServer @handleRequest
+      @server = https.createServer @handleRequest
     else
-      serv = http.createServer @handleRequest
-    serv.listen @port, @host
+      @server = http.createServer @handleRequest
+    @server.listen @port, @host
     @emit 'ready'
-    return serv
+    return @server
     
+  close: -> @server?.close()
+  
   handleRequest: (req, res) =>
     return unless req? and res?
     pathname = parse(req.url).pathname

@@ -12,7 +12,16 @@ server.listen 8080
 
 console.log "Server started!"
 
-# wscat -c ws://localhost:8080 -p 8
-server.socket.on 'connection', (socket) ->
-  socket.on 'message', (message) ->
-    socket.send 'hey' if message is 'hi'
+# wscat -c ws://localhost:8080/
+server.socket.route '/', (socket) ->
+  console.log "Client connected"
+  socket.on 'close', -> console.log "Client disconnected"
+  socket.on 'message', (message) -> 
+    socket.send 'ay yo waz gud wurld'
+    
+# wscat -c ws://localhost:8080/helloworld/
+server.socket.route '/hello', (socket) ->
+  console.log "Client connected"
+  socket.on 'close', -> console.log "Client disconnected"
+  socket.on 'message', (message) -> 
+    socket.send 'hello world!'

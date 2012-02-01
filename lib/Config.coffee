@@ -1,5 +1,6 @@
 class Config
   constructor: ->
+    @sockets = {}
     @engines = {}
     @middle = {}
     @production = false

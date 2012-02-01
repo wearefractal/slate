@@ -26,10 +26,19 @@ server.root "#{__dirname}/public"
 server.enable 'csrf', 'lfi', 'xss', '404', 'mime', 'static'
 server.engine 'jade', jade, {cool: 'params'}
 server.set 'production'
-server.set 'debug', false
 
 server.listen 8080
 console.log "Server started!"
+
+server.socket.route '/', (socket) ->
+  console.log "Client connected"
+  socket.on 'close', -> console.log "Client disconnected"
+  socket.on 'message', (message) -> 
+    socket.send 'ay yo waz gud wurld'
+    
+server.socket.route '/hello', (socket) ->
+  socket.on 'message', (message) -> 
+    socket.send 'hello world!'
 ```
 
 ## Examples

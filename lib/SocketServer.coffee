@@ -3,11 +3,15 @@
 
 class SocketServer extends EventEmitter
   constructor: (@config) ->
+  listen: (@server) ->
   
-  listen: (server) ->
-    @wss = new Server {server: server}
-    @wss.on 'connection', (socket) => @emit 'connection', socket
-    @emit 'ready'
-    return @wss
+  close: -> socket.close() for socket in @config.sockets
   
+  route: (path, fn) ->
+    unless @config.sockets[path]?
+      @config.sockets[path] = new Server {server: @server, path: path}
+    if fn?
+      @config.sockets[path].on 'connection', fn
+    return @config.sockets[path]
+    
 module.exports = SocketServer
