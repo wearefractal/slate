@@ -10,7 +10,8 @@
    "dependencies":{
       "coffee-script":"*",
       "mime":"*",
-      "xemplar":"*"
+      "xemplar":"*",
+      "ws":"*"
    },
    "devDependencies":{
       "node-log":"*",

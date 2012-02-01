@@ -34,6 +34,7 @@ class HttpServer extends EventEmitter
     else
       serv = http.createServer @handleRequest
     serv.listen @port, @host
+    @emit 'ready'
     return serv
     
   handleRequest: (req, res) =>
