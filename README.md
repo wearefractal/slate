@@ -30,13 +30,13 @@ server.set 'production'
 server.listen 8080
 console.log "Server started!"
 
-server.socket.route '/', (socket) ->
+server.route '/', (socket) ->
   console.log "Client connected"
   socket.on 'close', -> console.log "Client disconnected"
   socket.on 'message', (message) -> 
     socket.send 'ay yo waz gud wurld'
     
-server.socket.route '/hello', (socket) ->
+server.route '/hello', (socket) ->
   socket.on 'message', (message) -> 
     socket.send 'hello world!'
 ```
