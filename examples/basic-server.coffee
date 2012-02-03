@@ -3,7 +3,7 @@ jade = require 'slate-jade'
 
 server = slate.create()
 server.root "#{__dirname}/public"
-server.enable '404', 'json', 'mime', 'api', 'static'
+server.enable '404', 'buffer', 'mime', 'api', 'static'
 
 server.engine 'jade', jade
 server.set 'production'
