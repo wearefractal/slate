@@ -10,6 +10,8 @@ module.exports =
     root = config.get 'root'
     engines = config.get 'engines'
     lpath = join root, lpath
+    return unless lpath?
+    
     # Find folder index
     if isFolder lpath
       path = join lpath, 'index.html'
@@ -23,4 +25,9 @@ module.exports =
         return path if existsSync path
     else # Specific file
       return lpath if existsSync lpath
+      try # node modules
+        path = require.resolve lpath
+        return path if path?
+      catch err
+        # do nothing - not a module
     return

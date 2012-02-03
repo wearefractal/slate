@@ -8,5 +8,6 @@ module.exports = (req, res, next, config) ->
     if engines[ext]?
       res.setHeader 'Content-Type', 'text/html'
     else
-      res.setHeader 'Content-Type', lookup req.resolvedPath
+      mime = lookup req.resolvedPath
+      res.setHeader 'Content-Type', mime if mime?
   next()
