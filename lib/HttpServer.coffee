@@ -14,15 +14,15 @@ class HttpServer extends EventEmitter
       stack = config.get 'middle'
       next = =>
         ware = stack.shift()
-        return res.end() unless ware? # no more middleware
+        return unless ware? # no more middleware
         return next() unless ware.fn # invalid middleware
         ware.fn req, res, next, @config
       return next()
-  
+
   engine: (ext, obj, data, options) -> @config.engines[ext] = compile: obj, data: data, options: options
   enable: (args...) -> @config.middle.push @config.defaultMiddle[name] for name in args when @config.defaultMiddle[name]?
   use: (name, fn, args...) -> @config.middle.push name: name, fn: fn, args: args
-  
+
   listen: (@port, @host) ->
     if @config.get 'https'
       @server = https.createServer @handleRequest
@@ -31,16 +31,16 @@ class HttpServer extends EventEmitter
     @server.listen @port, @host
     @emit 'ready'
     return @server
-    
+
   close: -> @server?.close()
-  
+
   handleRequest: (req, res) =>
     return unless req? and res?
     pathname = parse(req.url).pathname
     path = lookupFile pathname, @config
     req.resolvedPath = path
     @emit 'request', req, res
-  
+
   loadDefaults: ->
     middleDir = join __dirname + '/middle/'
     incl = readdirSync middleDir
@@ -49,5 +49,5 @@ class HttpServer extends EventEmitter
       if require.resolve absolute
         name = basename(file, extname(file))
         @config.defaultMiddle[name] = name: name, fn: require(absolute), args: null
-  
+
 module.exports = HttpServer
