@@ -14,8 +14,8 @@ class HttpServer extends EventEmitter
       stack = config.get 'middle'
       next = =>
         ware = stack.shift()
-        return unless ware?
-        return next() unless ware.fn
+        return res.end() unless ware? # no more middleware
+        return next() unless ware.fn # invalid middleware
         ware.fn req, res, next, @config
       return next()
   
