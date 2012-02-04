@@ -1,9 +1,6 @@
 module.exports = (req, res, next) ->
   return next() if req.parsedJSON
   return next() if "GET" is req.method or "HEAD" is req.method
-  return next() unless "application/json" is req.mime()
-  req.body = req.body or {}
-  req.parsedJSON = true
   
   buf = ""
   req.setEncoding "utf8"
@@ -11,7 +8,8 @@ module.exports = (req, res, next) ->
 
   req.on "end", ->
     try
-      req.body = (if buf.length then JSON.parse(buf) else {})
+      req.body = JSON.parse(buf) || {}
+      req.parsedJSON = true
       next()
     catch err
-      res.end()
+      res.end('invalid json')
