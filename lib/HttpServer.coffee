@@ -10,23 +10,18 @@ require './httpExtend'
 class HttpServer extends EventEmitter
   constructor: (@config) ->
     @loadDefaults()
-    @on 'request', (req, res) => 
-      stack = (val for key,val of @config.get('middle'))
-      next = => 
+    @on 'request', (req, res) =>
+      stack = config.get 'middle'
+      next = =>
         ware = stack.shift()
         return unless ware?
-        if ware.enabled
-          ware.fn req, res, next, @config
-        else
-          next()
-      next()
-      return
-      
-  enable: (args...) -> @config.middle[name]?.enabled = true for name in args
-  disable: (args...) -> @config.middle[name]?.enabled = false for name in args
+        return next() unless ware.fn
+        ware.fn req, res, next, @config
+      return next()
   
   engine: (ext, obj, data, options) -> @config.engines[ext] = compile: obj, data: data, options: options
-  use: (name, fn, args...) -> @config.middle[name] = fn: fn, args: args
+  enable: (args...) -> @config.middle.push @config.defaultMiddle[name] for name in args when @config.defaultMiddle[name]?
+  use: (name, fn, args...) -> @config.middle.push name: name, fn: fn, args: args
   
   listen: (@port, @host) ->
     if @config.get 'https'
@@ -44,7 +39,6 @@ class HttpServer extends EventEmitter
     pathname = parse(req.url).pathname
     path = lookupFile pathname, @config
     req.resolvedPath = path
-    res.setHeader 'X-Powered-By', 'Slate'
     @emit 'request', req, res
   
   loadDefaults: ->
@@ -53,6 +47,7 @@ class HttpServer extends EventEmitter
     for file in incl
       absolute = join middleDir, file
       if require.resolve absolute
-        @use basename(file, extname(file)), require(absolute), null
+        name = basename(file, extname(file))
+        @config.defaultMiddle[name] = name: name, fn: require(absolute), args: null
   
 module.exports = HttpServer
