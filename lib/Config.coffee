@@ -2,7 +2,8 @@ class Config
   constructor: ->
     @sockets = {}
     @engines = {}
-    @middle = {}
+    @defaultMiddle = {}
+    @middle = [] # array to preserve order
     @production = false
     
   load: (path) -> @set require path
