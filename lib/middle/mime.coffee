@@ -6,7 +6,7 @@ module.exports = (req, res, next, config) ->
     engines = config.get 'engines'
     ext = extname(req.resolvedPath)[1..]
     if engines[ext]?
-      res.setHeader 'Content-Type', 'text/html'
+      res.setHeader 'Content-Type', config.mime[ext] || 'text/html'
     else
       mime = lookup req.resolvedPath
       res.setHeader 'Content-Type', mime if mime?

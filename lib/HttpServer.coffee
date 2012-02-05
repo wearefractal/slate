@@ -20,6 +20,7 @@ class HttpServer extends EventEmitter
       return next()
 
   engine: (ext, obj, data, options) -> @config.engines[ext] = compile: obj, data: data, options: options
+  mime: (ext, type) -> @config.mime[ext] = type
   enable: (args...) -> @config.middle.push @config.defaultMiddle[name] for name in args when @config.defaultMiddle[name]?
   use: (name, fn, args...) -> @config.middle.push name: name, fn: fn, args: args
 
