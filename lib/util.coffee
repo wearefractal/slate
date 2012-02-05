@@ -15,19 +15,19 @@ module.exports =
     # Find folder index
     if isFolder lpath
       path = join lpath, 'index.html'
-      return path if existsSync path
+      return path: path if existsSync path
       path = join lpath, 'index.htm'
-      return path if existsSync path
+      return path: path if existsSync path
       
       # Check custom engines
       for key in Object.keys engines
         path = join lpath, 'index.' + key
-        return path if existsSync path
+        return path: path if existsSync path
     else # Specific file
-      return lpath if existsSync lpath
+      return path: lpath if existsSync lpath
       try # node modules
         path = require.resolve lpath
-        return path if path?
+        return path: path, isModule: true if path?
       catch err
         # do nothing - not a module
     return

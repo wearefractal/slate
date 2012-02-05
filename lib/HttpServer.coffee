@@ -11,7 +11,7 @@ class HttpServer extends EventEmitter
   constructor: (@config) ->
     @loadDefaults()
     @on 'request', (req, res) =>
-      stack = config.get 'middle'
+      stack = Array config.middle...
       next = =>
         ware = stack.shift()
         return unless ware? # no more middleware
@@ -37,8 +37,10 @@ class HttpServer extends EventEmitter
   handleRequest: (req, res) =>
     return unless req? and res?
     pathname = parse(req.url).pathname
-    path = lookupFile pathname, @config
-    req.resolvedPath = path
+    file = lookupFile pathname, @config
+    if file?
+      req.resolvedPath = file.path
+      req.isModule = file.isModule
     @emit 'request', req, res
 
   loadDefaults: ->
