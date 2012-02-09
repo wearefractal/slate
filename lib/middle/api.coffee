@@ -4,6 +4,7 @@ module.exports = (req, res, next, config) ->
       mod = require req.resolvedPath
       mod req, res, next, config
     catch err # not a module
+      throw err
       next()
   else
     next()
